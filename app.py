@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,render_template
 from flask_cors import CORS
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -41,7 +41,7 @@ def get_data_from_sheet():
 
 @app.route('/',methods=['GET'])
 def get_data():
-    return 'Hello World !'
+    return render_template('index.html')
 
 @app.route('/subjects', methods=['GET'])
 def get_subjects():
