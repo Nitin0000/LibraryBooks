@@ -52,7 +52,7 @@ def get_subjects():
         if counter==0:
             counter=1
             continue
-        subjects.add(row[3])
+        subjects.add(row[3].upper().strip())
     return jsonify(list(subjects))
 
 @app.route('/data',methods=['POST'])
@@ -70,24 +70,8 @@ def show_data():
     limst_2=[]
     limst_3=[]
     iter=1
-    if not BookAccNo and not BookName and not BookAuthor:
-        lunt=0
-        for iter in data:
-            if lunt==0:
-                lunt=1
-                continue
-            acc=iter[0]
-            bookname=iter[1]
-            bookauthor=iter[2]
-            booksubject=iter[3]
-            json_output = {'accNo':acc,'title':bookname,'author':bookauthor,'subjectType':booksubject}
-            if BookSubject:
-                if booksubject.lower()==BookSubject.lower():
-                    BooksList.append(json_output)
-            else:
-                BooksList.append(json_output)
-    else:
-        while(iter < len(data)):
+    
+    while(iter < len(data)):
             counter=0
             acc=data[iter][0]
             bookname=data[iter][1]
@@ -119,7 +103,7 @@ def show_data():
                         limst_1.append(json_output)
                 else:
                     limst_1.append(json_output)
-        BooksList=limst_3+limst_2+limst_1
+    BooksList=limst_3+limst_2+limst_1
 
     PageNo=int(PageNo)
     iter = (PageNo-1)*20
@@ -132,4 +116,4 @@ def show_data():
     return [{'MaxPage':int(TotalPages/20)+(TotalPages%20!=0)},{'BookList':BooksFinalList}]
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0')
+    app.run(debug=True,port=5000)
