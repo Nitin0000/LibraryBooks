@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Searcher</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0px;
+        }
+
+        body {
+            overflow: wrap;
+        }
+
+        .Books_Searcher {
+            border: 1px solid;
+            padding: 10px;
+            display: flex;
+        }
+
+        .byName label,
+        .byAuthor label,
+        .byAcc label,
+        .bySubjectTopic label {
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .byName,
+        .byAuthor,
+        .byAcc {
+            margin-right: 5%;
+            width: 25%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .bySubjectTopic {
+            width: 25%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .byName input,
+        .byAuthor input,
+        .byAcc input,
+        .bySubjectTopic select {
+            height: 35px;
+            width: 100%;
+            font-size: 17px;
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .BookList {
+            border: 1px solid;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .bySubjectTopic {
+            width: 30%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .Book {
+            display: flex;
+        }
+
+        .Book_Container_Headings {
+            margin-right: 10px;
+            display: flex;
+        }
+
+        .Book_Container {
+            overflow-y: scroll;
+            height: calc(100vh - 250px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px white;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+
+        ::-webkit-scrollbar-thumb {
+            background: black;
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: grey;
+        }
+
+        .Book_Container_Headings div[class^="book"] {
+            border: 3px solid;
+            min-height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            background-color: lightgreen;
+        }
+
+        .bookId {
+            width: 10%;
+        }
+
+        .bookTitle {
+            width: 40%;
+        }
+
+        .bookAuthor {
+            width: 30%;
+        }
+
+        .bookSubjectTopic {
+            width: 20%;
+            overflow-x: hidden;
+        }
+
+        .Book div[class^="book"] {
+            border: 2px solid;
+            min-height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            background-color: lightyellow;
+        }
+
+        .pageNav {
+            align-items: center;
+            width: 90%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .pageNav #page {
+            height: 30px;
+            padding: 0 5px;
+            background: linear-gradient(to bottom, #0074D9, #001f3f);
+            /*add gradient background */
+            border: 2px solid black;
+            font-size: 20px;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            /* add border-radius */
+            box-shadow: 0px 0px 10px 0px #888888;
+            /*add box-shadow */
+            text-shadow: 1px 1px 2px black;
+            /* add text-shadow */
+            transition: all 0.2s ease-in-out;
+            /* add transition effect */
+            font-weight: 700;
+            margin: 0 5px;
+            display: inline-block;
+            line-height: 30px;
+        }
+
+        .pageNav #page:hover {
+            background-color: darkgray;
+            /* change the background color on hover */
+            cursor: pointer;
+        }
+
+        .pageNav #page:active {
+            transform: translateY(2px);
+            /* add active effect */
+        }
+
+        .pageNav i {
+            font-size: 30px;
+            color: #0074D9;
+            margin: 0 10px;
+        }
+
+        #prev,
+        #next {
+            border-radius: 10px;
+            border: 2px solid black;
+            padding: 0 5px;
+            background: green;
+            font-size: 30px;
+            font-weight: 900;
+            color: white;
+        }
+
+        #prev {
+            background: grey;
+            margin-left: 2%;
+        }
+
+        @keyframes ldio-v65eaoikxp-1 {
+            0% {
+                top: 36px;
+                height: 128px
+            }
+
+            50% {
+                top: 60px;
+                height: 80px
+            }
+
+            100% {
+                top: 60px;
+                height: 80px
+            }
+        }
+
+        @keyframes ldio-v65eaoikxp-2 {
+            0% {
+                top: 41.99999999999999px;
+                height: 116.00000000000001px
+            }
+
+            50% {
+                top: 60px;
+                height: 80px
+            }
+
+            100% {
+                top: 60px;
+                height: 80px
+            }
+        }
+
+        @keyframes ldio-v65eaoikxp-3 {
+            0% {
+                top: 48px;
+                height: 104px
+            }
+
+            50% {
+                top: 60px;
+                height: 80px
+            }
+
+            100% {
+                top: 60px;
+                height: 80px
+            }
+        }
+
+        .ldio-v65eaoikxp div {
+            position: absolute;
+            width: 30px;
+        }
+
+        .ldio-v65eaoikxp div:nth-child(1) {
+            left: 35px;
+            background: #1d3f72;
+            animation: ldio-v65eaoikxp-1 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+            animation-delay: -0.2s
+        }
+
+        .ldio-v65eaoikxp div:nth-child(2) {
+            left: 85px;
+            background: #5699d2;
+            animation: ldio-v65eaoikxp-2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+            animation-delay: -0.1s
+        }
+
+        .ldio-v65eaoikxp div:nth-child(3) {
+            left: 135px;
+            background: #d8ebf9;
+            animation: ldio-v65eaoikxp-3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+            animation-delay: undefineds
+        }
+
+        .loadingio-spinner-pulse-wk1o57z6llb {
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            background: #f1f2f3;
+            margin: auto;
+            margin-top: 1%;
+            display: none;
+        }
+
+        .ldio-v65eaoikxp {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform: translateZ(0) scale(1);
+            backface-visibility: hidden;
+            transform-origin: 0 0;
+        }
+
+        .ldio-v65eaoikxp div {
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+
+<body onload="displayRefresh()">
+    <div class="Books_Searcher">
+        <div class="byAcc"><label>Accesion No</label>
+            <br>
+            <input id="bsacc" type="search" placeholder="Search By Accesion No">
+        </div>
+        <div class="byName"><label>Title</label>
+            <br>
+            <input id="bsname" type="search" placeholder="Search By Book's Name">
+        </div>
+        <div class="byAuthor"><label>Author</label>
+            <br>
+            <input id="bsauthor" type="search" placeholder="Search By Book's Author">
+        </div>
+        <div class="bySubjectTopic"><label>Subject</label>
+            <br>
+            <select id="subjectTopic">
+                <option value="">Select Option</option>
+            </select>
+        </div>
+    </div>
+    <div class="BookList">
+        <div class="Book_Container_Headings">
+            <div class="bookId">Accesion No</div>
+            <div class="bookTitle">Title</div>
+            <div class="bookAuthor">Author</div>
+            <div class="bookSubjectTopic">Subject</div>
+        </div>
+        <div class="loadingio-spinner-pulse-wk1o57z6llb">
+            <div class="ldio-v65eaoikxp">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="Book_Container"></div>
+    </div>
+    <span id="prev" onclick="handlePrev(this)" value="0">
+        < </span>
+            <div class="pageNav"></div><span onclick="handleNext(this)" value='1' id="next">></span>
+            <script>
+                let BookContainer = document.querySelector(".Book_Container");
+
+                let BookAcc = document.querySelector("#bsacc");
+                let BookName = document.querySelector("#bsname");
+                let BookAuthor = document.querySelector("#bsauthor");
+                let BookSubject = document.querySelector("#subjectTopic");
+                let Page = document.querySelector("#page");
+                let Prev = document.querySelector("#prev");
+                let Next = document.querySelector("#next");
+                let PageNav = document.querySelector(".pageNav");
+
+                let loader = document.querySelector('.loadingio-spinner-pulse-wk1o57z6llb');
+
+                var page = "1";
+                var PageShown;
+                var TotalNavSlides;
+                var start;
+
+                function displayRefresh() {
+                    loader.style.display = 'block';
+                    document.body.style.overflow = 'hidden'
+                    fetch('https://mnc-library.onrender.com/subjects')
+                        .then((response) => response.json())
+                        .then((data) => {
+                            data.forEach((sub) => {
+                                BookSubject.innerHTML += '<option value=' + sub + '>' + sub + '</option>'
+                            })
+                        })
+                        .then(() => {
+                            display('', '', '', '', '')
+                        })
+                }
+
+                const displayforpage = async (page, accNo, name, author, type) => {
+                    loader.style.display = 'block';
+                    document.body.style.overflow = 'hidden'
+                    const input = JSON.stringify({
+                        page: page || "1",
+                        accNo: accNo || "",
+                        title: name || "",
+                        author: author || "",
+                        subjectType: type || "",
+                    });
+                    const rawResponse = await fetch("https://mnc-library.onrender.com/data", {
+                        method: "POST",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                        body: input,
+                    });
+                    let BookList = await rawResponse.json();
+                    PageShown = BookList[0].MaxPage;
+                    if (start)
+                        displayPage(start, start + 20);
+                    else
+                        displayPage(1, 20);
+                    TotalNavSlides = parseInt(PageShown / 20) + (PageShown % 20 != 0);
+                    if (TotalNavSlides == 1 || PageShown == 0) {
+                        Next.style.backgroundColor = 'grey';
+                    } else {
+                        Next.style.backgroundColor = 'green';
+                    }
+                    BookList[1].BookList.forEach((book) => {
+                        BookContainer.innerHTML +=
+                            '<div class="Book">' +
+                            '<div class="bookId">' +
+                            book.accNo +
+                            "</div>" +
+                            '<div class="bookTitle">' +
+                            book.title +
+                            "</div>" +
+                            '<div class="bookAuthor">' +
+                            book.author +
+                            "</div>" +
+                            '<div class="bookSubjectTopic">' +
+                            book.subjectType +
+                            "</div>" +
+                            "</div>";
+                    });
+                };
+
+                const display = async (page, accNo, name, author, type) => {
+                    preveleind = 1;
+                    loader.style.display = 'block';
+                    document.body.style.overflow = 'hidden'
+                    start = 0;
+                    const input = JSON.stringify({
+                        page: page || "1",
+                        accNo: accNo || "",
+                        title: name || "",
+                        author: author || "",
+                        subjectType: type || "",
+                    });
+                    const rawResponse = await fetch("https://mnc-library.onrender.com/data", {
+                        method: "POST",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                        body: input,
+                    });
+                    let BookList = await rawResponse.json();
+                    PageShown = BookList[0].MaxPage;
+                    displayPage(1, 20);
+                    TotalNavSlides = parseInt(PageShown / 20) + (PageShown % 20 != 0);
+                    if (TotalNavSlides == 1 || PageShown == 0) {
+                        Next.style.backgroundColor = 'grey';
+                        Prev.style.backgroundColor = 'grey';
+                    } else {
+                        Next.style.backgroundColor = 'green';
+                        Prev.style.backgroundColor = 'grey';
+                    }
+                    BookList[1].BookList.forEach((book) => {
+                        BookContainer.innerHTML +=
+                            '<div class="Book">' +
+                            '<div class="bookId">' +
+                            book.accNo +
+                            "</div>" +
+                            '<div class="bookTitle">' +
+                            book.title +
+                            "</div>" +
+                            '<div class="bookAuthor">' +
+                            book.author +
+                            "</div>" +
+                            '<div class="bookSubjectTopic">' +
+                            book.subjectType +
+                            "</div>" +
+                            "</div>";
+                    });
+                };
+
+                var preveleind = 1;
+
+                function displayPage(start, end) {
+                    PageNav.innerHTML = '';
+                    for (let i = start; i <= end && i <= PageShown; i++) {
+                        if (i == preveleind) {
+                            PageNav.innerHTML += '<div id="page" onclick="handlePage(this)" value="' +
+                                i +
+                                '" style="background:green">' +
+                                i +
+                                "</div>";
+                        }
+                        else {
+                            PageNav.innerHTML +=
+                                '<div id="page" onclick="handlePage(this)" value="' +
+                                i +
+                                '">' +
+                                i +
+                                "</div>";
+                        }
+                    }
+                    loader.style.display = 'none';
+                    document.body.style.overflow = 'wrap'
+                }
+
+                BookName.addEventListener("change", (e) => {
+                    const val = e.target.value.toLowerCase();
+                    BookContainer.innerHTML = "";
+                    display(
+                        page,
+                        BookAcc.value.toLowerCase(),
+                        val,
+                        BookAuthor.value.toLowerCase(),
+                        BookSubject.value.toLowerCase()
+                    );
+                });
+
+                BookAuthor.addEventListener("change", (e) => {
+                    const val = e.target.value.toLowerCase();
+                    BookContainer.innerHTML = "";
+                    display(
+                        page,
+                        BookAcc.value.toLowerCase(),
+                        BookName.value.toLowerCase(),
+                        val,
+                        BookSubject.value.toLowerCase()
+                    );
+                });
+
+                BookAcc.addEventListener("change", (e) => {
+                    const val = e.target.value.toLowerCase();
+                    BookContainer.innerHTML = "";
+                    display(
+                        page,
+                        val,
+                        BookName.value.toLowerCase(),
+                        BookAuthor.value.toLowerCase(),
+                        BookSubject.value.toLowerCase()
+                    );
+                });
+
+                BookSubject.addEventListener("change", (e) => {
+                    const val = e.target.value.toLowerCase();
+                    BookContainer.innerHTML = "";
+                    display(
+                        page,
+                        BookAcc.value.toLowerCase(),
+                        BookName.value.toLowerCase(),
+                        BookAuthor.value.toLowerCase(),
+                        val
+                    );
+                });
+
+                function handlePage(ele) {
+                    page = ele.getAttribute("value");
+                    preveleind = page;
+                    BookContainer.innerHTML = "";
+                    displayforpage(
+                        page,
+                        BookAcc.value.toLowerCase(),
+                        BookName.value.toLowerCase(),
+                        BookAuthor.value.toLowerCase(),
+                        BookSubject.value.toLowerCase()
+                    );
+                }
+
+                function handleNext(ele) {
+                    pageNext = ele.getAttribute("value");
+                    if (pageNext >= TotalNavSlides) return;
+                    prevPage = Number(Prev.getAttribute("value"));
+                    Prev.style.backgroundColor = 'green';
+                    Prev.setAttribute("value", prevPage + 1);
+                    ele.setAttribute("value", Number(pageNext) + 1);
+                    if (Number(pageNext) + 1 >= TotalNavSlides) {
+                        ele.style.backgroundColor = 'grey';
+                    }
+                    start = (prevPage + 1) * 20 + 1;
+                    displayPage(start, start + 20);
+                }
+
+                function handlePrev(ele) {
+                    pagePrev = ele.getAttribute("value");
+                    if (pagePrev <= '0') return;
+                    pageNext = Number(Next.getAttribute("value"));
+                    Next.style.backgroundColor = 'green';
+                    Next.setAttribute("value", pageNext - 1);
+                    ele.setAttribute("value", Number(pagePrev) - 1);
+                    if (pagePrev - 1 <= '0') {
+                        ele.style.backgroundColor = 'grey';
+                    }
+                    start = (pagePrev - 1) * 20 + 1;
+                    displayPage(start, start + 20);
+                }
+            </script>
+</body>
+
+</html>
